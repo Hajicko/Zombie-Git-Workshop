@@ -28,7 +28,7 @@ public class Zombie {
             dir.normalize().mult(speed);
             pos.add(dir);
         }
-        facingLeft = dir.x <= 0; // if moving left, face left
+        facingLeft = dir.x <= 1; // if moving left, face left
     }
 
     public void display() {

@@ -2,6 +2,7 @@ package gamecode;
 
 import processing.core.PApplet;
 import processing.core.PVector;
+import processing.core.PImage;
 import java.util.ArrayList;
 
 public class GameManager {
@@ -19,6 +20,8 @@ public class GameManager {
 
     int damageCooldown = 30;
     int lastDamageFrame = -999;
+    
+    PImage bgGameplay; // background image
 
     public GameManager(PApplet p) {
         this.p = p;
@@ -26,6 +29,8 @@ public class GameManager {
         zombies = new ArrayList<>();
         powerUps = new ArrayList<>();
         spawnWave();
+        
+        bgGameplay = p.loadImage("assets/backgrounds/gameplay.png"); // load background
     }
 
     public void update() {
@@ -72,6 +77,9 @@ public class GameManager {
     }
 
     public void display() {
+        // ✅ draw tiled background
+        drawBackground();
+
         player.display();
         for (Zombie z : zombies) z.display();
         for (PowerUp pu : powerUps) pu.display();
@@ -115,6 +123,20 @@ public class GameManager {
     void spawnWave() {
         for (int i = 0; i < 5; i++) {
             zombies.add(new Zombie(p));
+        }
+    }
+
+    private void drawBackground() {
+        if (bgGameplay != null) {
+            int tileW = bgGameplay.width;
+            int tileH = bgGameplay.height;
+            for (int x = 0; x < p.width; x += tileW) {
+                for (int y = 0; y < p.height; y += tileH) {
+                    p.image(bgGameplay, x, y, tileW, tileH);
+                }
+            }
+        } else {
+            p.background(200, 220, 200); // fallback color
         }
     }
 }
